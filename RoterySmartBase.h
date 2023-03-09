@@ -12,7 +12,7 @@
 #include "MotorHandler/MotorHandler.cpp"
 #include "feedbackHandler/feedbackHandler.cpp"
 #include "PIDRatio/PIDRatio.cpp"
-#include <multi_Lidar.h>
+// #include <multi_Lidar.h>
 #include "smartbase/smartbase.h"
 #include "Arduino.h"
 
@@ -33,7 +33,7 @@ public:
     bool virtualMode = false;
     long interval = 10000;
     long prevtime = 0;
-    RoteryBase() {}
+    RoterySmartBase() {}
     void setup()
     {
         if (!virtualMode)
@@ -74,7 +74,7 @@ public:
             if(!smartBase.pathBase)
             {
                 // Serial.println("manual");
-                smartBase.compute();
+                smartBase.distanceCompute();
             }
             else if(smartBase.pathBase)
             {

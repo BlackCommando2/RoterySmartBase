@@ -25,7 +25,7 @@ public:
     int lidarStopDistance=30,degreeOfRotation=2740;
     double mpuReadings=0.0,mpuDifference=0.0,mpuRead=0.0;
 
-    smartbase_Lidar()
+    smartbase()
     {
         pidinit();
     }
@@ -389,7 +389,7 @@ public:
         }
     }
 
-    void compute()
+    void distanceCompute()
     {
         //Serial.println("compute");
         if (distanceMode)

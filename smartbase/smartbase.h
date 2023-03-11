@@ -396,8 +396,8 @@ public:
         {
             // Serial.println("distanceMode");
             parallelInput=lidarData->fr;
-            yInput = lidarData->fy;
             parallelSetpoint = parallelDistance;
+            yInput = lidarData->fy;
             ySetpoint=desiredDistance;
             // parallelpid->Compute();
             ypid->Compute();
@@ -414,7 +414,7 @@ public:
             outputDir->fx=inputDir->fx;
             outputDir->fr=inputDir->fr;
             outputDir->fy=inputDir->fy;
-            mpuReadings=realReadings->fr;
+            // mpuReadings=realReadings->fr;
             // Serial.println(mpuReadings);
             // outputDir->display();           
         }

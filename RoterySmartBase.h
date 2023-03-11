@@ -39,7 +39,7 @@ public:
         if (!virtualMode)
         {
             feedback.setup();
-            mpu.setOffset(1);
+            mpu.setOffset(-1);
             feedback.setDirections(real);
             smartBase.disabledistanceMode(); // new
             smartBase.setLidarDirection(lidar);

@@ -98,14 +98,14 @@ public:
 
     Direction *directions = new Direction();
     MotorSpeeds *ms = new MotorSpeeds();
+    //2,3,1
+    double m3_x = (e * i - f * h) / det;
+    double m3_y = (h * c - i * b) / det;
+    double m3_r = (b * f - c * e) / det;
 
-    double m2_x = (e * i - f * h) / det;
-    double m2_y = (h * c - i * b) / det;
-    double m2_r = (b * f - c * e) / det;
-
-    double m3_x = (g * f - d * i) / det;
-    double m3_y = (a * i - g * c) / det;
-    double m3_r = (d * c - a * f) / det;
+    double m2_x = (g * f - d * i) / det;
+    double m2_y = (a * i - g * c) / det;
+    double m2_r = (d * c - a * f) / det;
 
     double m1_x = (d * h - g * e) / det;
     double m1_y = (g * b - a * h) / det;

@@ -5,7 +5,7 @@ private:
     double parallelInput, parallelSetpoint, parallelOutput, parallelKp = 3.1, parallelKi = 1.0, parallelKd = 0.0;//2
     // 0.90,0.11,0.0
     //1.72,2.83,0.0
-    double yInput, ySetpoint, yOutput, yKp = 3.0, yKi = 1.0, yKd = 0.0;//3
+    double yInput, ySetpoint, yOutput, yKp = 3.0, yKi = 1.0, yKd = 0.0;//3,1 //1.5,0.8
     int templidar1,templidar2,previousDistanceCm1=0,previousDistanceCm2=0;
     int lidarSpeed=0,lidarSpeedOffset=0.8,directionalOffset=-1;
     bool lidarRotate=false,stage1=false,stage2=false,stage3=false;
@@ -78,6 +78,12 @@ public:
     {
         this->lidarData=lidarData;
     }
+
+    void setYLimits(int limit1=-100, int limit2=100)
+    {
+        ypid->SetOutputLimits(limit1,limit2);
+    }
+
     void updateX(double kp,double ki,double kd)
     {
     //     Serial.print(parallelKp);

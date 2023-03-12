@@ -53,6 +53,8 @@ public:
             smartBase.setUserInDirections(smartBaseUserIn,UserIn);
             PID_ratio.set(real, PID_out, UserIn);
             PID_ratio.setup();
+            SB_ratio.set(real, PID_out, UserIn);
+            SB_ratio.setup();
             OdometryHelper.setDirections(PID_out);
             OdometryHelper.setMotors(finalSpeeds);
             base.setMotorSpeeds(finalSpeeds);
@@ -87,8 +89,16 @@ public:
                 //Serial.println("auto");
                 smartBase.pathCompute();
             }
+
+            if(smartBase.distanceMode)
+            {
+                SB_ratio.compute();
+            }
+            else
+            {
+                PID_ratio.compute();
+            }
             
-            PID_ratio.compute();
 
             if (!virtualMode)
             {

@@ -16,9 +16,10 @@ public:
     double dist = 0, brakeOut = 0, zero = 0;
     bool braking = false;
     double xKp = 1.0, xKi = 0, xKd = 0;
-    double yKp = 1.0, yKi = 0, yKd = 0;
+    double yp = 1.0, yKi = 0, yKd = 0;
     double rKp = 3.0, rKi = 0, rKd = 0;//3.0
     double brakeKp = 4.0, brakeKi = 0.1, brakeKd = 0;
+    int feedbackOffset = 8;
     PID *fxPID, *fyPID, *frPID, *brake;
 
     PIDRatio() {}
@@ -56,6 +57,31 @@ public:
         frPID->SetOutputLimits(-255, 255);
         brake->SetOutputLimits(-255, 255);
     }
+    
+    void updateYPID(double yKp,double yKi,double yKd)
+    {
+        this-> yKp = yKp;
+        this-> yKi = yKi;
+        this-> yKd = yKd;K
+        fyPID->SetTunings(this->yKp,this->yKi,this->yKd);
+        Serial.println((String)this->yKp+", "+(String)this->yKi+", "+(String)this->yKd);
+    }
+
+    void updateBrakePID(double brakeKp,double brakeKi,double brakeKd)
+    {
+        this-> brakeKp = brakeKp;
+        this-> brakeKi = brakeKi;
+        this-> brakeKd = brakeKd;
+        brake->SetTunings(brakeKp,brakeKi,brakeKd);
+        Serial.println((String)this->brakeKp+", "+(String)this->brakeKi+", "+(String)this->brakeKd);
+    }
+
+    void setFeedbackOffset(int off)
+    {
+        this-> feedbackOffset = off;
+        Serial.println("feed: "+(String)this->feedbackOffset);
+    }
+
     void compute()
     {
             // UserIn->display();
@@ -80,7 +106,7 @@ public:
             *prevUserIn = *currUserIn;
 
 
-            *t_feedback = *_feedback / 8; // test this
+            *t_feedback = *_feedback / feedbackOffset; // test this // 8
             *currentFeedback = *t_feedback - *prevFeedback;
             *speedReferenceFeedback = *currentFeedback;
             currUserIn->process();
@@ -107,4 +133,4 @@ public:
             fyPID->Compute();
             frPID->Compute(); 
     }
-} PID_ratio;
+} PID_ratio,SB_ratio;

@@ -16,7 +16,7 @@ public:
     double dist = 0, brakeOut = 0, zero = 0;
     bool braking = false;
     double xKp = 1.0, xKi = 0, xKd = 0;
-    double yp = 1.0, yKi = 0, yKd = 0;
+    double yKp = 1.0, yKi = 0, yKd = 0;
     double rKp = 3.0, rKi = 0, rKd = 0;//3.0
     double brakeKp = 4.0, brakeKi = 0.1, brakeKd = 0;
     int feedbackOffset = 8;
@@ -62,7 +62,7 @@ public:
     {
         this-> yKp = yKp;
         this-> yKi = yKi;
-        this-> yKd = yKd;K
+        this-> yKd = yKd;
         fyPID->SetTunings(this->yKp,this->yKi,this->yKd);
         Serial.println((String)this->yKp+", "+(String)this->yKi+", "+(String)this->yKd);
     }
@@ -84,7 +84,8 @@ public:
 
     void compute()
     {
-            // UserIn->display();
+            UserIn->display();
+            _feedback->display();
             UserIn->process();
 
             // Braking Logic
@@ -132,5 +133,6 @@ public:
             fxPID->Compute();
             fyPID->Compute();
             frPID->Compute(); 
+            output->display();
     }
 } PID_ratio,SB_ratio;

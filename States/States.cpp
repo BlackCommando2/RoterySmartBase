@@ -19,6 +19,7 @@ class MotorSpeeds{
 
 class Direction{
     public:
+    JSONVar dataPack;
     String a;
     double rfx, rfy, rfr, magnitude;
     double fx = 0, fy = 0, fr = 0;
@@ -33,6 +34,15 @@ class Direction{
     void displayRatio(){
         Serial.printf("rfx: %lf, rfy: %lf, rfr: %lf, magnitude: %lf\n",rfx,rfy,rfr,magnitude);
     }
+
+    JSONVar getDataPack()
+    {
+        dataPack["fx"] = fx;
+        dataPack["fy"] = fy;
+        dataPack["fr"] = fr;
+        return dataPack;
+    }
+
     double max(){
         if(fx>fy){
             if(fx > fr)
@@ -74,6 +84,7 @@ class Direction{
         a=Serial.readStringUntil(',');
         fr=a.toDouble();
     }
+
     void process(){
         magnitude = abs(fx) + abs(fy) + abs(fr);
         // magnitude = magnitude == 0 ? 1 : magnitude;

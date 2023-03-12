@@ -1,7 +1,7 @@
 class smartbase
 {
 private:
-    int desiredDistance, lidarAvg = 0, parallelDistance = 0;
+    int desiredDistance=0, lidarAvg = 0, parallelDistance = 0;
     double parallelInput, parallelSetpoint, parallelOutput, parallelKp = 3.1, parallelKi = 1.0, parallelKd = 0.0; // 2
     // 0.90,0.11,0.0
     // 1.72,2.83,0.0
@@ -51,13 +51,6 @@ public:
         this->inputDir = inputdir;
         this->outputDir = outputdir;
     }
-
-    // void set(Direction *in, Direction *out, Direction *setp)
-    // {
-    //     this-> inputDir = setp;
-    //     this-> smFeed = in;
-    //     this-> outputDir = out;
-    // }
 
     void enabledistanceMode()
     {
@@ -407,10 +400,10 @@ public:
         if (distanceMode)
         {
             // Serial.println("distanceMode");
-            parallelInput = lidarData->fr;
-            parallelSetpoint = parallelDistance;
-            yInput = lidarData->fy;
-            ySetpoint = desiredDistance;
+            // parallelInput = lidarData->fr;
+            // parallelSetpoint = parallelDistance;
+            // yInput = lidarData->fy;
+            // ySetpoint = desiredDistance;
             // parallelpid->Compute();//
             // ypid->Compute();
             outputDir->fx = inputDir->fx;

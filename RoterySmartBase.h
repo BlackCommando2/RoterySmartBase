@@ -79,22 +79,24 @@ public:
                 vbase.feedbackCompute();
             }
 
-            if(!smartBase.pathBase)
-            {
-                // Serial.println("manual");
-                smartBase.distanceCompute();
-            }
-            else if(smartBase.pathBase)
-            {
-                //Serial.println("auto");
-                smartBase.pathCompute();
-            }
+            smartBase.distanceCompute();
+
+            // if(!smartBase.pathBase)
+            // {
+            //     // Serial.println("manual");
+            //     smartBase.distanceCompute();
+            // }
+            // else if(smartBase.pathBase)
+            // {
+            //     //Serial.println("auto");
+            //     smartBase.pathCompute();
+            // }
 
             if(smartBase.distanceMode)
             {
                 SB_ratio.compute();
             }
-            else
+            else if(!smartBase.distanceMode)
             {
                 PID_ratio.compute();
             }

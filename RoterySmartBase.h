@@ -10,15 +10,18 @@
 #include "odometry/odometry.cpp"
 #include "encoderFeedback/encoderFeedback.h"
 #include "MotorHandler/MotorHandler.cpp"
+#include "smartbase/smartbase.h"
 #include "feedbackHandler/feedbackHandler.cpp"
 #include "PIDRatio/PIDRatio.cpp"
 // #include <multi_Lidar.h>
-#include "smartbase/smartbase.h"
+
 #include "Arduino.h"
 
 class RoterySmartBase
 {
 public:
+    // smartbase *smartBase = new smartbase();
+    // smartbase *tempSM = new smartbase();
     Direction *real = new Direction(); 
     Direction *PID_out = new Direction(); 
     Direction *UserIn = new Direction();
@@ -38,11 +41,14 @@ public:
     {
         if (!virtualMode)
         {
+            // smartBase.pidinit();
+            // feedback.setSmartBase(smartBase);
+            feedback.setLidar(lidar);
             feedback.setup();
             mpu.setOffset(-1);
             feedback.setDirections(real);
-            smartBase.disabledistanceMode(); // new
-            smartBase.setLidarDirection(lidar);
+            smartBase.disabledistanceMode();
+            smartBase.setLidar(lidar);
             smartBase.setRealDirection(real);
             smartBase.setUserInDirections(smartBaseUserIn,UserIn);
             PID_ratio.set(real, PID_out, UserIn);

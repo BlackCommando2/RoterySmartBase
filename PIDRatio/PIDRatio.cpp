@@ -84,8 +84,8 @@ public:
 
     void compute()
     {
-            UserIn->display();
-            _feedback->display();
+            // UserIn->display();
+            // _feedback->display();
             UserIn->process();
 
             // Braking Logic
@@ -134,5 +134,11 @@ public:
             fyPID->Compute();
             frPID->Compute(); 
             output->display();
+    }
+
+    void equatePrev()
+    {
+        *t_feedback = *_feedback / feedbackOffset;
+        prevFeedback = t_feedback;
     }
 } PID_ratio,SB_ratio;

@@ -51,11 +51,11 @@ public:
         if (!smartBase.distanceMode)
         {
             directions->fy = encY->getReadings();
-            Serial.println("E:\tX:"+String(directions -> fx)+"\tY:"+String(directions -> fy )+"\tR:"+String(directions -> fr));
+            // Serial.println("E:\tX:"+String(directions -> fx)+"\tY:"+String(directions -> fy )+"\tR:"+String(directions -> fr));
         }
         else if (smartBase.distanceMode)
         {
-            Serial.println("D:\tX:"+String(directions -> fx)+"\tY:"+String(directions -> fy )+"\tR:"+String(directions -> fr));
+            // Serial.println("D:\tX:"+String(directions -> fx)+"\tY:"+String(directions -> fy )+"\tR:"+String(directions -> fr));
             directions->fy = feedLidar->fy;
             // Serial.println("feed: "+(String)directions->fy);
         }

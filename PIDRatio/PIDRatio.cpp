@@ -113,6 +113,8 @@ public:
             currUserIn->process();
             if (!currUserIn->isZero)
             {
+                // Serial.println("!isZero");
+                // delay(100000);
                 opt->minimize();
             }
             currUserIn->process();
@@ -133,12 +135,12 @@ public:
             fxPID->Compute();
             fyPID->Compute();
             frPID->Compute(); 
-            output->display();
+            // output->display();
     }
 
     void equatePrev()
     {
         *t_feedback = *_feedback / feedbackOffset;
-        prevFeedback = t_feedback;
+        *prevFeedback = *t_feedback;
     }
 } PID_ratio,SB_ratio;

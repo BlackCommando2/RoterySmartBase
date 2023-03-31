@@ -55,6 +55,7 @@ public:
     void enabledistanceMode()
     {
         distanceMode = true;
+        Serial.println("DistanceMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
     }
     void disabledistanceMode()
     {

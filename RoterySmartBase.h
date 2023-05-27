@@ -10,27 +10,35 @@
 #include "odometry/odometry.cpp"
 #include "encoderFeedback/encoderFeedback.h"
 #include "MotorHandler/MotorHandler.cpp"
+#include "smartbase/smartbase.h"
 #include "feedbackHandler/feedbackHandler.cpp"
 #include "PIDRatio/PIDRatio.cpp"
 // #include <multi_Lidar.h>
-#include "smartbase/smartbase.h"
+
 #include "Arduino.h"
 
 class RoterySmartBase
 {
 public:
+    // smartbase *smartBase = new smartbase();
+    // smartbase *tempSM = new smartbase();
     Direction *real = new Direction(); 
     Direction *PID_out = new Direction(); 
     Direction *UserIn = new Direction();
     Direction *smartBaseUserIn = new Direction();
     Direction *lidar = new Direction();
+    Direction *lidarDiff = new Direction();
+   Direction *tempData1 = new Direction();
+    Direction *tempData2 = new Direction();
     MotorSpeeds *finalSpeeds = new MotorSpeeds();
     encoderFeedback *efx = new encoderFeedback(); 
     encoderFeedback *efy = new encoderFeedback();
     encoderFeedback *efr = new encoderFeedback();
+
     Motor *m1, *m2, *m3, *m4;
     UniversalEncoder *encx, *ency, *encr;
-    bool virtualMode = false;
+    double tempKp;
+    bool virtualMode = false,DisMode= true;
     long interval = 10000;
     long prevtime = 0;
     RoterySmartBase() {}
@@ -38,15 +46,20 @@ public:
     {
         if (!virtualMode)
         {
+            // smartBase.pidinit();
+            // feedback.setSmartBase(smartBase);
+            feedback.setLidar(lidar);
             feedback.setup();
-            mpu.setOffset(-1);
+            mpu.setOffset(1);
             feedback.setDirections(real);
-            smartBase.disabledistanceMode(); // new
-            smartBase.setLidarDirection(lidar);
+            smartBase.disabledistanceMode();
+            smartBase.setLidar(lidar);
             smartBase.setRealDirection(real);
             smartBase.setUserInDirections(smartBaseUserIn,UserIn);
             PID_ratio.set(real, PID_out, UserIn);
             PID_ratio.setup();
+            SB_ratio.set(real, PID_out, UserIn);
+            SB_ratio.setup();
             OdometryHelper.setDirections(PID_out);
             OdometryHelper.setMotors(finalSpeeds);
             base.setMotorSpeeds(finalSpeeds);
@@ -70,19 +83,25 @@ public:
             {
                 vbase.feedbackCompute();
             }
-
-            if(!smartBase.pathBase)
+            smartBase.distanceCompute();
+            // if(!smartBase.pathBase)
+            // {
+            //     // Serial.println("manual");
+            //     smartBase.distanceCompute();
+            // }
+            // else if(smartBase.pathBase)
+            // {
+            //     //Serial.println("auto");
+            //     smartBase.pathCompute();
+            // }
+            if(smartBase.distanceMode)
             {
-                // Serial.println("manual");
-                smartBase.distanceCompute();
+                SB_ratio.compute();
             }
-            else if(smartBase.pathBase)
+            else if(!smartBase.distanceMode)
             {
-                //Serial.println("auto");
-                smartBase.pathCompute();
+                PID_ratio.compute();
             }
-            
-            PID_ratio.compute();
 
             if (!virtualMode)
             {
@@ -105,6 +124,30 @@ public:
         m4 = _m4;
 
         base.set(m1, m2, m3, m4);
+    }
+    void changeDisMode()
+    {
+        // Serial.println(lidar->fy-50);
+        if(!DisMode)
+        {
+            tempData1 = PID_ratio.equatePrev();
+            // PID_ratio.storePrev(tempData2);
+            smartBase.disabledistanceMode();
+            DisMode=!DisMode;
+
+        }
+        else if(DisMode)
+        {
+            tempKp=smartBase.PIDOutDiff();
+            SB_ratio.updateYPID(tempKp,0.0,0.0);
+            SB_ratio.updateRPID(6,0.0,0.0);
+            tempData2=SB_ratio.equatePrev();
+            SB_ratio.storePrev(tempData1);
+            smartBase.setDesiredDistance(50);
+            smartBase.enabledistanceMode();
+            DisMode=!DisMode;  
+
+        }
     }
     void setEncoders(UniversalEncoder *_encx, UniversalEncoder *_ency, UniversalEncoder *_encr)
     {
@@ -144,6 +187,10 @@ public:
     Direction *getLidarDataInRef()
     {
         return lidar;
+    }
+    Direction *getLidarDataDiffInRef()
+    {
+        return lidarDiff;
     }
 
     MotorSpeeds *getFinalSpeedsRef()

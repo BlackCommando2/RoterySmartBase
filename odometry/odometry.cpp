@@ -138,13 +138,13 @@ public:
     void compute()
     {
         // directions->display();
-        ms->m1 = (m1_x * directions->fx + m1_y * directions->fy + m1_r * directions->fr);
+        ms->m1 = (m1_x *-1* directions->fx + m1_y * directions->fy + m1_r *-1* directions->fr);
         max = abs(ms->m1);
 
-        ms->m2 = (m2_x * directions->fx + m2_y * directions->fy + m2_r * directions->fr);
+        ms->m2 = (m2_x *-1* directions->fx + m2_y * directions->fy + m2_r * -1*directions->fr);
         manageMax(ms->m2);
 
-        ms->m3 = (m3_x * directions->fx + m3_y * directions->fy + m3_r * directions->fr);
+        ms->m3 = (m3_x *-1* directions->fx + m3_y * directions->fy + m3_r *-1* directions->fr);
         manageMax(ms->m3);
 
         // Serial.println("max: "+String(max));
